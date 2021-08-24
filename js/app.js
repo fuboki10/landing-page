@@ -33,6 +33,23 @@
  *
 */
 
+function setActiveSection(section) {
+  // remove active class from section if found
+  const activeSection = document.querySelector(".your-active-class");
+  if (activeSection) activeSection.classList.remove('your-active-class');
+
+  // set current section to active
+  section.className = 'your-active-class';
+}
+
+function navListClickHandler(e) {
+  const section = document.getElementById(e.target.getAttribute('section__id'));
+
+  section.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+
+  setActiveSection(section);
+}
+
 // build the nav
 function buildNavBar() {
   const sections = document.querySelectorAll('section');
@@ -47,7 +64,10 @@ function buildNavBar() {
     listItem.className = 'menu__link';
 
     // add section id to the list item
-    listItem.setAttribute('section-id', `${section.id}`);
+    listItem.setAttribute('section__id', `${section.id}`);
+
+    // add scroll event
+    listItem.addEventListener('click', navListClickHandler);
 
     navBar.appendChild(listItem);
   });
