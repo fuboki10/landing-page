@@ -1,48 +1,29 @@
-/**
- *
- * Manipulating the DOM exercise.
- * Exercise programmatically builds navigation,
- * scrolls to anchors from navigation,
- * and highlights section in viewport upon scrolling.
- *
- * Dependencies: None
- *
- * JS Version: ES2015/ES6
- *
- * JS Standard: ESlint
- *
-*/
+let sections, navBar, activeSection;
 
 /**
- * Define Global Variables
- *
-*/
-
-
-/**
- * End Global Variables
- * Start Helper Functions
- *
-*/
-
-
-
-/**
- * End Helper Functions
- * Begin Main Functions
- *
-*/
-
-function setActiveSection(section) {
+ * set section to be active
+ * 
+ * @param {Element} section 
+ */
+const setActiveSection = (section) => {
   // remove active class from section if found
-  const activeSection = document.querySelector(".your-active-class");
-  if (activeSection) activeSection.classList.remove('your-active-class');
+  if (!activeSection)
+    activeSection = document.querySelector(".your-active-class");
+
+  activeSection.classList.remove('your-active-class');
 
   // set current section to active
   section.className = 'your-active-class';
+  activeSection = section;
+
 }
 
-function navListClickHandler(e) {
+/**
+ * nav list click event handler
+ * 
+ * @param {Event} e 
+ */
+const navListClickHandler = (e) => {
   const section = document.getElementById(e.target.getAttribute('section__id'));
 
   section.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
@@ -50,10 +31,12 @@ function navListClickHandler(e) {
   setActiveSection(section);
 }
 
-// build the nav
-function buildNavBar() {
-  const sections = document.querySelectorAll('section');
-  const navBar = document.getElementById('navbar__list');
+/**
+ * Build the nav bar
+ */
+const buildNavBar = () => {
+  sections = document.querySelectorAll('section');
+  navBar = document.getElementById('navbar__list');
 
   // add sections li to navbar
   sections.forEach((section) => {
@@ -71,33 +54,29 @@ function buildNavBar() {
 
     navBar.appendChild(listItem);
   });
-
-
-  console.log(sections);
-
-  console.log(navBar);
 }
 
+const sectionInView = (section) => {
+  var boundingRect = section.getBoundingClientRect();
 
-// Add class 'active' to section when near top of viewport
+  return (
+    boundingRect.top <= 200 &&
+    boundingRect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+  );
+}
 
+const scrollHandler = (e) => {
+  if (!activeSection)
+    activeSection = document.querySelector(".your-active-class");
 
-// Scroll to anchor ID using scrollTO event
-
-
-/**
- * End Main Functions
- * Begin Events
- *
-*/
-
-// Build menu 
-
-// Scroll to section on link click
-
-// Set sections as active
-
+  sections.forEach((section) => {
+    if (section.id !== activeSection.id && sectionInView(section)) {
+      setActiveSection(section);
+    }
+  });
+}
 
 document.addEventListener('DOMContentLoaded', (e) => {
   buildNavBar();
+  document.addEventListener('scroll', scrollHandler);
 });
