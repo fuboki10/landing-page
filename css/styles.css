@@ -69,10 +69,13 @@ section {
   padding-left: 0;
   margin: 0;
   text-align: right;
+  display: flex;
+  justify-content: center;
 }
 
 .navbar__menu li {
-  display: inline-block;
+  display: inlifne-block;
+  cursor: pointer;
 }
 
 .navbar__menu .menu__link {

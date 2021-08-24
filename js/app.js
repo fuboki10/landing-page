@@ -36,7 +36,7 @@
 // build the nav
 function buildNavBar() {
   const sections = document.querySelectorAll('section');
-  const navBar = document.querySelector('#navbar__list');
+  const navBar = document.getElementById('navbar__list');
 
   // add sections li to navbar
   sections.forEach((section) => {
