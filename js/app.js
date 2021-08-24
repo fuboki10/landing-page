@@ -56,15 +56,24 @@ const buildNavBar = () => {
   });
 }
 
+/**
+ * Check if user viewport active section is changed
+ * 
+ * @param {Element} section 
+ * @returns boolean
+ */
 const sectionInView = (section) => {
-  var boundingRect = section.getBoundingClientRect();
+  // get section bounding rect
+  const boundingRect = section.getBoundingClientRect();
 
-  return (
-    boundingRect.top <= 200 &&
-    boundingRect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
-  );
+  return boundingRect.top <= 200;
 }
 
+/**
+ * change active section when user scroll to another one
+ * 
+ * @param {Event} e 
+ */
 const scrollHandler = (e) => {
   if (!activeSection)
     activeSection = document.querySelector(".your-active-class");
