@@ -1,4 +1,5 @@
 let sections, navBar, activeSection;
+let scrollTimeOut;
 
 /**
  * set section to be active
@@ -96,6 +97,10 @@ const sectionInView = (section) => {
  * @param {Event} e 
  */
 const scrollHandler = (e) => {
+  // remove timeout
+  clearTimeout(scrollTimeOut);
+  navBar.style.display = 'flex';
+
   if (!activeSection)
     activeSection = document.querySelector(".your-active-class");
 
@@ -104,6 +109,12 @@ const scrollHandler = (e) => {
       setActiveSection(section, i);
     }
   });
+
+  // add scroll time out to hide navbar after 1 second no scrolling
+  scrollTimeOut = setTimeout(() => {
+    console.log('looo');
+    navBar.style.display = 'none';
+  }, 1000);
 }
 
 document.addEventListener('DOMContentLoaded', (e) => {
