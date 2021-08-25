@@ -83,11 +83,9 @@ const sectionInView = (section) => {
   const boundingRect = section.getBoundingClientRect();
 
   return (
-    boundingRect.top <= 50 &&
+    boundingRect.top >= -50 &&
     boundingRect.bottom <=
-    (window.innerHeight || document.documentElement.clientHeight) &&
-    boundingRect.right <=
-    (window.innerWidth || document.documentElement.clientWidth)
+    (window.innerHeight || document.documentElement.clientHeight)
   );
 }
 
