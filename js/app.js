@@ -79,8 +79,6 @@ const getDistanceFromView = (section) => {
   // get section bounding rect
   const boundingRect = section.getBoundingClientRect();
 
-  console.log(section.id, boundingRect);
-
   return Math.abs(boundingRect.y);
 }
 
@@ -119,4 +117,7 @@ const scrollHandler = (e) => {
 document.addEventListener('DOMContentLoaded', (e) => {
   buildNavBar();
   document.addEventListener('scroll', scrollHandler);
+  document.getElementById('top-btn').addEventListener('click', (e) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 });
