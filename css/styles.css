@@ -74,7 +74,7 @@ section {
 }
 
 .navbar__menu li {
-  display: inlifne-block;
+  display: inline;
   cursor: pointer;
 }
 
@@ -261,4 +261,10 @@ section.your-active-class .landing__container::after {
   background: #333;
   color: #fff;
   transition: ease 0.3s all;
+}
+
+@media only screen and (max-width: 700px) {
+  .navbar__menu li {
+    font-size: 10px;
+  }
 }
