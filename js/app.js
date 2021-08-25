@@ -4,10 +4,9 @@ let scrollTimeOut;
 /**
  * set section to be active
  * 
- * @param {Element} section section HTML element
  * @param {Number} idx section index
  */
-const setActiveSection = (section, idx) => {
+const setActiveSection = (idx) => {
   // remove active class from section if found
   if (!activeSection)
     activeSection = document.querySelector(".your-active-class");
@@ -15,8 +14,8 @@ const setActiveSection = (section, idx) => {
   activeSection.classList.remove('your-active-class');
 
   // set current section to active
-  section.className = 'your-active-class';
-  activeSection = section;
+  sections[idx].className = 'your-active-class';
+  activeSection = sections[idx];
 
   // set menu link section active
   for (let i = 0; i < navBar.children.length; i++) {
@@ -36,11 +35,12 @@ const setActiveSection = (section, idx) => {
  * @param {Event} e 
  */
 const navListClickHandler = (e) => {
-  const section = document.getElementById(e.target.getAttribute('section__id'));
+  const i = parseInt(e.target.id, 10);
+  const section = sections[i];
 
   section.scrollIntoView({ behavior: "smooth" });
 
-  setActiveSection(section);
+  setActiveSection(i);
 }
 
 /**
@@ -59,9 +59,6 @@ const buildNavBar = () => {
     listItem.className = 'menu__link';
     listItem.id = i;
 
-    // add section id to the list item
-    listItem.setAttribute('section__id', `${section.id}`);
-
     // add scroll event
     listItem.addEventListener('click', navListClickHandler);
 
@@ -78,15 +75,13 @@ const buildNavBar = () => {
  * @param {Element} section 
  * @returns boolean
  */
-const sectionInView = (section) => {
+const getDistanceFromView = (section) => {
   // get section bounding rect
   const boundingRect = section.getBoundingClientRect();
 
-  return (
-    boundingRect.top >= -200 &&
-    boundingRect.bottom <=
-    (window.innerHeight || document.documentElement.clientHeight)
-  );
+  console.log(section.id, boundingRect);
+
+  return Math.abs(boundingRect.y);
 }
 
 /**
@@ -102,15 +97,21 @@ const scrollHandler = (e) => {
   if (!activeSection)
     activeSection = document.querySelector(".your-active-class");
 
+  // index of min abs y diff 
+  let nearestSectionIdx = 0, minYDiff = Number.MAX_SAFE_INTEGER;
+
   sections.forEach((section, i) => {
-    if (section.id !== activeSection.id && sectionInView(section)) {
-      setActiveSection(section, i);
+    const yDiff = getDistanceFromView(section);
+    if (yDiff < minYDiff) {
+      minYDiff = yDiff;
+      nearestSectionIdx = i;
     }
   });
 
+  setActiveSection(nearestSectionIdx);
+
   // add scroll time out to hide navbar after 1 second no scrolling
   scrollTimeOut = setTimeout(() => {
-    console.log('looo');
     navBar.style.display = 'none';
   }, 1000);
 }
